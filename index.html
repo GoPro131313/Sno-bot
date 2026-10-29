@@ -4,230 +4,300 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Snow Rider: Unlimited</title>
+<title>Snow Rider 3D — Hack Edition</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#071526;color:white;font-family:system-ui,Arial;overflow:hidden}
-canvas{display:block;width:100vw;height:100dvh;touch-action:none}
-#hud{position:fixed;top:12px;left:12px;right:12px;display:flex;gap:8px;align-items:flex-start;pointer-events:none}
-.pill{background:#071526d9;border:1px solid #ffffff30;border-radius:12px;padding:9px 12px;font-weight:800;backdrop-filter:blur(8px)}
-#menuBtn{margin-left:auto;pointer-events:auto;cursor:pointer;color:white;font-size:15px}
-#panel,#overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#020917bb;padding:18px}
-#panel{z-index:5}
-#overlay{z-index:4}
-.card{width:min(420px,100%);max-height:90dvh;overflow:auto;background:#10243a;border:1px solid #ffffff25;border-radius:22px;padding:22px;box-shadow:0 20px 80px #0008}
-h1{margin:0 0 5px;font-size:30px}
-h2{margin:0 0 12px}
-p{color:#c5d7e8}
-button{border:0;border-radius:12px;padding:12px 14px;background:#dff6ff;color:#10243a;font-weight:850;cursor:pointer}
-button:active{transform:scale(.97)}
-.primary{width:100%;background:#8cf3d0;margin-top:12px;font-size:16px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.hack{display:flex;align-items:center;justify-content:space-between;gap:6px;background:#1b354e;padding:10px;border-radius:12px;font-size:14px}
-.hack button{padding:8px 10px;min-width:65px}
-.on{background:#70f0b4}
-#controls{position:fixed;bottom:18px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;pointer-events:none}
-.ctrl{width:72px;height:65px;border:1px solid #ffffff55;border-radius:18px;background:#10243ac9;color:white;font-size:27px;pointer-events:auto;touch-action:none}
-#jump{width:90px;font-size:14px}
-.small{font-size:12px;color:#a9bfd2}
+body{margin:0;overflow:hidden;background:#bce8ff;font-family:system-ui,sans-serif;color:white}
+canvas{display:block}
+#hud{position:fixed;top:12px;left:12px;right:12px;display:flex;gap:8px;align-items:center;pointer-events:none}
+.pill{background:#10253ddd;border:1px solid #ffffff44;border-radius:12px;padding:10px 13px;font-weight:bold}
+button{cursor:pointer;border:0;border-radius:11px;padding:11px 14px;font-weight:bold}
+#hacks{margin-left:auto;pointer-events:auto;background:#ffdc77;color:#243349}
+#overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#09233a99;padding:18px}
+.card{background:#10253df5;border:1px solid #ffffff35;border-radius:20px;padding:22px;width:min(400px,100%);max-height:90dvh;overflow:auto;box-shadow:0 15px 60px #1238}
+h1{margin:0 0 8px;font-size:29px}
+p{color:#d1e6f7}
+.primary{background:#8cf2c6;width:100%;margin-top:12px;font-size:16px}
+#hackPanel{display:none;position:fixed;inset:0;background:#06162acc;align-items:center;justify-content:center;padding:18px}
+#hackGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.hack{background:#1c3953;color:white;display:flex;justify-content:space-between;align-items:center;gap:5px;padding:10px;border-radius:10px}
+.hack button{padding:8px;background:#dceaf6}
+.hack button.on{background:#65efb0}
+#mobile{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:space-between;padding:0 18px;pointer-events:none}
+#mobile button{pointer-events:auto;width:70px;height:64px;background:#10253dc9;color:white;font-size:24px;touch-action:none}
+#jump{width:88px!important;font-size:14px!important}
+.small{font-size:12px;color:#aac6dc}
 </style>
 </head>
 <body>
-<canvas id="game"></canvas>
 <div id="hud">
  <div class="pill">🏔️ <span id="score">0</span> m</div>
  <div class="pill">🎁 <span id="gifts">0</span></div>
- <div class="pill">⚡ <span id="speed">1.0</span>x</div>
- <button id="menuBtn" class="pill">⚙ HACKS</button>
-</div>
-<div id="controls">
- <button class="ctrl" id="left">◀</button>
- <button class="ctrl" id="jump">JUMP ⬆</button>
- <button class="ctrl" id="right">▶</button>
-</div>
-<div id="panel">
- <div class="card">
-  <h2>⚡ Hack Center</h2>
-  <p>Customize your downhill run. Hacks work locally in this game.</p>
-  <div id="hackList" class="grid"></div>
-  <button id="resume" class="primary">RESUME RIDE</button>
-  <p class="small">Keyboard shortcut: H · Restart: R</p>
- </div>
+ <button id="hacks">⚡ HACKS</button>
 </div>
 <div id="overlay">
- <div class="card" style="text-align:center">
-  <div style="font-size:54px">🏂</div>
-  <h1 id="endTitle">Snow Rider</h1>
-  <p id="endText">Dodge the trees, collect gifts, and ride as far as you can.</p>
+ <div class="card">
+  <h1 id="title">🏂 Snow Rider 3D</h1>
+  <p id="message">Race down the mountain, dodge obstacles, jump and collect presents!</p>
   <button class="primary" id="start">START RIDING</button>
-  <p class="small">Move: ← → / A D · Jump: Space · Hacks: H</p>
+  <p class="small">← → or A/D: steer · Space/↑: jump · H: hacks</p>
  </div>
 </div>
-<script>
-(()=>{
-const canvas=document.querySelector('#game'),ctx=canvas.getContext('2d');
+<div id="hackPanel">
+ <div class="card">
+  <h1>⚡ Hack Center</h1>
+  <p>Turn cheats on and off whenever you want.</p>
+  <div id="hackGrid"></div>
+  <button id="close" class="primary">BACK TO GAME</button>
+ </div>
+</div>
+<div id="mobile">
+ <button id="left">◀</button>
+ <button id="jump">JUMP ↑</button>
+ <button id="right">▶</button>
+</div>
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
 const $=id=>document.getElementById(id);
-let W=innerWidth,H=innerHeight,dpr=1;
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
-addEventListener('resize',resize);resize();
-const hacks=[
- ['god','God Mode'],['speed','Speed Boost'],['moon','Moon Jump'],
- ['auto','Auto Dodge'],['magnet','Gift Magnet'],['big','Giant Rider']
-];
-let enabled={god:false,speed:false,moon:false,auto:false,magnet:false,big:false};
-let running=false,dead=false,menu=false,dist=0,gifts=0,high=+(localStorage.snowHigh||0);
-let player={x:0,jump:0,vj:0,lean:0};
-let objects=[],particles=[],keys={},spawn=0,last=0,elapsed=0;
-function makeHackUI(){
- $('hackList').innerHTML='';
- hacks.forEach(([key,label])=>{
-  const wrap=document.createElement('div');wrap.className='hack';
-  const name=document.createElement('span');name.textContent=label;
-  const btn=document.createElement('button');btn.textContent=enabled[key]?'ON':'OFF';btn.className=enabled[key]?'on':'';
-  btn.onclick=()=>{enabled[key]=!enabled[key];btn.textContent=enabled[key]?'ON':'OFF';btn.className=enabled[key]?'on':''};
-  wrap.append(name,btn);$('hackList').append(wrap);
- });
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xbbe7ff);
+scene.fog=new THREE.Fog(0xbbe7ff,45,180);
+
+const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,300);
+camera.position.set(0,5.2,10);
+camera.lookAt(0,1,-12);
+
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+document.body.prepend(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xe5f6ff,0x8298ac,2.1));
+const sun=new THREE.DirectionalLight(0xffffff,2.6);
+sun.position.set(-8,16,7);
+sun.castShadow=true;
+scene.add(sun);
+
+const mat=(color,roughness=1)=>new THREE.MeshStandardMaterial({color,roughness});
+const snow=mat(0xf3faff),edgeMat=mat(0xd7eaf5);
+const wood=mat(0x76513b),green=mat(0x165f4b);
+const darkGreen=mat(0x104638),red=mat(0xef5265);
+const gold=mat(0xffcf48),blue=mat(0x347db2);
+const white=mat(0xffffff),rockMat=mat(0x8396a5);
+
+function box(w,h,d,material,x,y,z,parent=scene){
+ const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);
+ m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;
+ parent.add(m);return m;
 }
-function showMenu(){menu=true;running=false;$('panel').style.display='flex';makeHackUI()}
-function hideMenu(){$('panel').style.display='none';menu=false;if(!dead)running=true}
-$('menuBtn').onclick=()=>menu?hideMenu():showMenu();
-$('resume').onclick=hideMenu;
+function cylinder(rt,rb,h,material,x,y,z,parent=scene){
+ const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,8),material);
+ m.position.set(x,y,z);m.castShadow=true;parent.add(m);return m;
+}
+
+// Snowy mountain and downhill track.
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(240,300),snow);
+ground.rotation.x=-Math.PI/2;
+ground.position.set(0,-.12,-85);ground.receiveShadow=true;scene.add(ground);
+
+box(12,.18,300,snow,0,0,-90);
+box(.18,.3,300,edgeMat,-6.05,.04,-90);
+box(.18,.3,300,edgeMat,6.05,.04,-90);
+
+for(let side of [-1,1]){
+ for(let i=0;i<8;i++){
+  const mountain=new THREE.Mesh(
+   new THREE.ConeGeometry(12+i%3*3,25+i%4*8,5),
+   i%2?snow:edgeMat);
+  mountain.position.set(side*(15+i%3*8),10+i%4*4,-20-i*25);
+  mountain.rotation.y=i*.8;scene.add(mountain);
+ }
+}
+
+// Sled model.
+const sled=new THREE.Group();scene.add(sled);
+box(1.05,.12,1.9,red,0,.25,0,sled);
+box(.68,.16,1.2,blue,0,.38,-.05,sled);
+for(let x of [-.42,.42]){
+ const rail=new THREE.Mesh(new THREE.BoxGeometry(.09,.09,2.15),gold);
+ rail.position.set(x,.12,0);sled.add(rail);
+}
+const body=box(.42,.5,.48,blue,0,.69,-.12,sled);
+const head=new THREE.Mesh(new THREE.SphereGeometry(.25,16,12),mat(0xf0c6a1));
+head.position.set(0,1.03,-.12);sled.add(head);
+const helmet=new THREE.Mesh(new THREE.SphereGeometry(.27,16,10,0,Math.PI*2,0,Math.PI/2),red);
+helmet.position.set(0,1.12,-.12);sled.add(helmet);
+sled.position.set(0,0,2.5);
+
+// Tree, rock and present models.
+function tree(){
+ const g=new THREE.Group();
+ cylinder(.12,.18,1.1,wood,0,.55,0,g);
+ for(let i=0;i<3;i++){
+  const c=new THREE.Mesh(new THREE.ConeGeometry(.72-i*.14,1.15,7),i===2?darkGreen:green);
+  c.position.y=1.05+i*.62;c.castShadow=true;g.add(c);
+ }
+ return g;
+}
+function rock(){
+ const g=new THREE.Group();
+ const m=new THREE.Mesh(new THREE.DodecahedronGeometry(.5,0),rockMat);
+ m.position.y=.35;m.scale.set(1,.75,1.2);m.castShadow=true;g.add(m);
+ return g;
+}
+function present(){
+ const g=new THREE.Group();
+ box(.65,.65,.65,red,0,.38,0,g);
+ box(.13,.67,.68,gold,0,.39,0,g);
+ box(.67,.67,.13,gold,0,.39,0,g);
+ const bow1=new THREE.Mesh(new THREE.TorusGeometry(.15,.045,6,12,Math.PI*1.6),gold);
+ bow1.position.set(-.1,.77,0);g.add(bow1);
+ const bow2=bow1.clone();bow2.position.x=.1;bow2.rotation.z=Math.PI;g.add(bow2);
+ return g;
+}
+const objects=[];
+function spawn(){
+ const r=Math.random(),type=r<.48?'tree':r<.72?'rock':r<.86?'gift':'tree';
+ const obj=type==='tree'?tree():type==='rock'?rock():present();
+ const lane=(Math.random()*1.72-.86)*5.2;
+ obj.position.set(lane,0,-115);
+ obj.userData={type,hit:false,lane};
+ scene.add(obj);objects.push(obj);
+}
+for(let i=0;i<38;i++){
+ const t=tree();t.scale.setScalar(.7+Math.random()*.7);
+ t.position.set((Math.random()<.5?-1:1)*(8+Math.random()*24),0,-i*5-10);
+ scene.add(t);
+}
+for(let i=0;i<18;i++)spawn();
+
+const hacks={god:false,speed:false,moon:false,auto:false,magnet:false};
+const labels={god:'God Mode',speed:'Speed Hack',moon:'Moon Jump',auto:'Auto Dodge',magnet:'Gift Magnet'};
+function buildHacks(){
+ $('hackGrid').innerHTML='';
+ for(const k in hacks){
+  const row=document.createElement('div');row.className='hack';
+  const label=document.createElement('span');label.textContent=labels[k];
+  const b=document.createElement('button');b.textContent=hacks[k]?'ON':'OFF';
+  b.className=hacks[k]?'on':'';
+  b.onclick=()=>{hacks[k]=!hacks[k];b.textContent=hacks[k]?'ON':'OFF';b.className=hacks[k]?'on':''};
+  row.append(label,b);$('hackGrid').append(row);
+ }
+}
+let running=false,dead=false,dist=0,gifts=0;
+let x=0,jumpY=0,jumpV=0,steer=0,spawnTimer=0;
+const keys={};
 function start(){
- dist=0;gifts=0;elapsed=0;spawn=0;objects=[];particles=[];
- player={x:0,jump:0,vj:0,lean:0};dead=false;menu=false;running=true;
- $('panel').style.display='none';$('overlay').style.display='none';
- updateHUD();
+ dist=0;gifts=0;x=0;jumpY=0;jumpV=0;
+ dead=false;running=true;spawnTimer=0;
+ for(const o of objects)scene.remove(o);
+ objects.length=0;
+ for(let i=0;i<30;i++)spawn();
+ sled.position.x=0;
+ $('overlay').style.display='none';
+ $('hackPanel').style.display='none';
+}
+function crash(){
+ if(hacks.god)return;
+ dead=true;running=false;
+ $('title').textContent='WIPEOUT!';
+ $('message').textContent=`Distance: ${Math.floor(dist)} m · Presents: ${gifts}`;
+ $('start').textContent='RIDE AGAIN';
+ $('overlay').style.display='flex';
 }
 $('start').onclick=start;
-function crash(){
- if(enabled.god)return;
- dead=true;running=false;high=Math.max(high,Math.floor(dist));localStorage.snowHigh=high;
- $('endTitle').textContent='WIPEOUT!';
- $('endText').textContent=`You rode ${Math.floor(dist)} m and collected ${gifts} gifts. Best: ${high} m.`;
- $('start').textContent='RIDE AGAIN';$('overlay').style.display='flex';
+$('hacks').onclick=()=>{running=false;$('hackPanel').style.display='flex';buildHacks()};
+$('close').onclick=()=>{$('hackPanel').style.display='none';if(!dead)running=true};
+
+function jump(){
+ if(running&&jumpY<=0){jumpV=hacks.moon?.42:.24}
 }
-function updateHUD(){
- $('score').textContent=Math.floor(dist);$('gifts').textContent=gifts;
- $('speed').textContent=(enabled.speed?2.5:1).toFixed(1);
-}
-function slopeX(y){return W/2+Math.sin(y*.0015)*W*.12}
-function laneWidth(y){return Math.min(W*.82,560)*(0.82+Math.min(y/H,1)*.18)}
-function project(o){
- const depth=Math.max(.03,1-o.z/1.25);
- const y=H*.18+(1-depth)*(H*.88);
- const center=slopeX(y+dist*.15);
- const x=center+o.lane*laneWidth(y)*.48;
- return {x,y,s:0.25+depth*1.0,depth};
-}
-function spawnObject(){
- const r=Math.random(),lane=(Math.random()*1.65-.825);
- objects.push({type:r<.52?'tree':r<.78?'rock':'gift',lane,z:1.2});
-}
-function drawMountain(){
- let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#8ac9e9');g.addColorStop(.48,'#d8f2ff');g.addColorStop(1,'#f7fdff');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- ctx.fillStyle='#b6dced';
- for(let i=0;i<7;i++){let x=i*W/5-W*.1;ctx.beginPath();ctx.moveTo(x,H*.48);ctx.lineTo(x+W*.12,H*.12+(i%3)*35);ctx.lineTo(x+W*.28,H*.48);ctx.fill()}
- ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(slopeX(H*.1)-laneWidth(H*.1)*.5,H*.1);
- ctx.lineTo(slopeX(H)-laneWidth(H)*.5,H);ctx.lineTo(slopeX(H)+laneWidth(H)*.5,H);
- ctx.lineTo(slopeX(H*.1)+laneWidth(H*.1)*.5,H*.1);ctx.closePath();ctx.fill();
- // Track edges
- ctx.strokeStyle='#a7cfe4';ctx.lineWidth=4;ctx.beginPath();
- for(let y=H*.1;y<=H;y+=8){const x=slopeX(y),w=laneWidth(y)*.5;if(y===H*.1)ctx.moveTo(x-w,y);else ctx.lineTo(x-w,y)}
- ctx.stroke();ctx.beginPath();
- for(let y=H*.1;y<=H;y+=8){const x=slopeX(y),w=laneWidth(y)*.5;if(y===H*.1)ctx.moveTo(x+w,y);else ctx.lineTo(x+w,y)}
- ctx.stroke();
-}
-function drawTree(x,y,s){
- ctx.fillStyle='#c3d9e7';ctx.beginPath();ctx.ellipse(x,y+s*16,s*19,s*6,0,0,7);ctx.fill();
- ctx.fillStyle='#684e42';ctx.fillRect(x-s*3,y-s*2,s*6,s*18);
- for(let i=0;i<3;i++){ctx.fillStyle=['#176c60','#105749','#0b473e'][i];ctx.beginPath();ctx.moveTo(x,y-s*(32-i*12));ctx.lineTo(x-s*(16-i*3),y+s*(i*1));ctx.lineTo(x+s*(16-i*3),y+s*(i*1));ctx.fill()}
- ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(x,y-s*32);ctx.lineTo(x-s*7,y-s*17);ctx.lineTo(x+s*2,y-s*21);ctx.lineTo(x+s*9,y-s*14);ctx.lineTo(x+s*13,y-s*7);ctx.lineTo(x-s*12,y-s*7);ctx.fill();
-}
-function draw(){
- ctx.clearRect(0,0,W,H);drawMountain();
- // distant snow streaks
- for(let i=0;i<24;i++){let y=((i*97+dist*13)%(H+40));let x=(i*173+Math.sin(i)*W*.3)%W;ctx.fillStyle='#d6eaf4';ctx.fillRect(x,y,2,9)}
- objects.sort((a,b)=>b.z-a.z);
- for(const o of objects){
-  const p=project(o),s=p.s;
-  if(o.type==='tree')drawTree(p.x,p.y,s);
-  else if(o.type==='rock'){
-   ctx.fillStyle='#7d929e';ctx.beginPath();ctx.ellipse(p.x,p.y,s*13,s*9,0,0,7);ctx.fill();
-   ctx.fillStyle='#c0d0d9';ctx.beginPath();ctx.ellipse(p.x-s*3,p.y-s*3,s*5,s*3,-.5,0,7);ctx.fill();
-  }else{
-   ctx.fillStyle='#ffbd42';ctx.fillRect(p.x-s*9,p.y-s*9,s*18,s*18);
-   ctx.fillStyle='#f8f4db';ctx.fillRect(p.x-s*2,p.y-s*9,s*4,s*18);ctx.fillRect(p.x-s*9,p.y-s*2,s*18,s*4);
-   ctx.strokeStyle='#b6751b';ctx.lineWidth=1.5;ctx.strokeRect(p.x-s*9,p.y-s*9,s*18,s*18);
-  }
+addEventListener('keydown',e=>{
+ if(['ArrowLeft','ArrowRight','ArrowUp',' '].includes(e.key))e.preventDefault();
+ keys[e.key.toLowerCase()]=true;
+ if(e.key==='ArrowLeft')keys.left=true;
+ if(e.key==='ArrowRight')keys.right=true;
+ if(e.key===' '||e.key==='ArrowUp')jump();
+ if(e.key.toLowerCase()==='h'){
+  if($('hackPanel').style.display==='flex')$('close').click();
+  else $('hacks').click();
  }
- // rider shadow
- const px=slopeX(H*.76)+player.x*laneWidth(H*.76)*.42,py=H*.76-player.jump;
- ctx.fillStyle='#8eafc1';ctx.beginPath();ctx.ellipse(px,py+17,enabled.big?28:18,6,0,0,7);ctx.fill();
- ctx.save();ctx.translate(px,py);ctx.rotate(player.lean*.16);
- const sc=enabled.big?1.4:1;
- ctx.scale(sc,sc);
- // snowboard
- ctx.fillStyle='#f44c71';ctx.beginPath();ctx.roundRect(-22,9,44,9,5);ctx.fill();
- ctx.fillStyle='#25394e';ctx.beginPath();ctx.ellipse(0,-3,11,14,0,0,7);ctx.fill();
- ctx.fillStyle='#f2c59d';ctx.beginPath();ctx.arc(0,-18,9,0,7);ctx.fill();
- ctx.fillStyle='#ff744f';ctx.beginPath();ctx.arc(0,-21,10,Math.PI,Math.PI*2);ctx.fill();
- ctx.fillStyle='#182c43';ctx.fillRect(-9,-18,18,4);
- ctx.strokeStyle='#25394e';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-7,-2);ctx.lineTo(-14,7);ctx.moveTo(7,-2);ctx.lineTo(14,7);ctx.stroke();
- ctx.restore();
- if(player.jump>12){ctx.fillStyle='#fff';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.fillText('AIR TIME!',px,py-35)}
+ if(e.key==='Enter'&&(dead||!running))start();
+});
+addEventListener('keyup',e=>{
+ keys[e.key.toLowerCase()]=false;
+ if(e.key==='ArrowLeft')keys.left=false;
+ if(e.key==='ArrowRight')keys.right=false;
+});
+function hold(id,k){
+ const el=$(id);
+ el.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});
+ for(const ev of ['pointerup','pointercancel','pointerleave'])
+ el.addEventListener(ev,()=>keys[k]=false);
 }
-function frame(t){
- const dt=Math.min((t-last)/16.67||1,2.5);last=t;
- if(running&&!menu&&!dead){
-  elapsed+=dt;const speed=(enabled.speed?2.5:1)*dt;
-  dist+=speed*(.75+Math.min(dist/1600,.8));
-  const dir=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0);
-  if(enabled.auto){
-   const near=objects.find(o=>o.z<.32&&o.type!=='gift'&&Math.abs(o.lane-player.x)<.32);
-   if(near)player.x+= (player.x<near.lane?-.035:.035)*dt;
+hold('left','left');hold('right','right');
+$('jump').addEventListener('pointerdown',e=>{e.preventDefault();jump()});
+
+let last=0;
+function animate(t){
+ requestAnimationFrame(animate);
+ const dt=Math.min((t-last)/16.67||1,2);last=t;
+ if(running&&!dead){
+  const speed=(hacks.speed?1.8:1)*(1+Math.min(dist/1800,.65));
+  dist+=speed*dt*.65;
+  steer=(keys.right||keys.d?1:0)-(keys.left||keys.a?1:0);
+  if(hacks.auto){
+   const obstacle=objects.find(o=>o.userData.type!=='gift'&&o.position.z> -15&&o.position.z< -5&&Math.abs(o.position.x-x)<1.5);
+   if(obstacle)steer=x<obstacle.position.x?-1:1;
   }
-  player.x+=dir*.045*dt;player.x=Math.max(-.88,Math.min(.88,player.x));player.lean=dir;
-  if(player.vj||player.jump>0){player.jump+=player.vj*dt;player.vj-=.85*dt;if(player.jump<=0){player.jump=0;player.vj=0}}
-  spawn-=dt;if(spawn<=0){spawnObject();spawn=26/Math.min(1.8,1+dist/1800)}
+  x+=steer*.19*dt;
+  x=THREE.MathUtils.clamp(x,-5.3,5.3);
+  sled.position.x=x;sled.position.y=jumpY;
+  sled.rotation.z=-steer*.12;
+  jumpY+=jumpV*dt;jumpV-=.018*dt;
+  if(jumpY<0){jumpY=0;jumpV=0}
+  spawnTimer-=dt;
+  if(spawnTimer<=0){spawn();spawnTimer=Math.max(8,22-dist/450)}
   for(const o of objects){
-   o.z-=.0085*speed;
-   if(o.type==='gift'&&enabled.magnet&&o.z<.48&&Math.abs(o.lane-player.x)<.65)o.lane=player.x;
-   if(!o.hit&&o.z<.13&&o.z>.055&&Math.abs(o.lane-player.x)<(enabled.big?.22:.14)){
-    o.hit=true;
-    if(o.type==='gift'){gifts++;for(let i=0;i<8;i++)particles.push({x:W/2,y:H*.76,vx:Math.random()*6-3,vy:-Math.random()*5,c:'#ffc84a',life:25})}
-    else if(player.jump<26){crash()}
+   o.position.z+=speed*.72*dt;
+   if(o.userData.type==='gift'&&hacks.magnet&&o.position.z> -15){
+    o.position.x=THREE.MathUtils.lerp(o.position.x,x,.08);
+   }
+   if(!o.userData.hit&&o.position.z>0.5&&o.position.z<4&&Math.abs(o.position.x-x)<(o.userData.type==='tree'?1.05:1.0)){
+    o.userData.hit=true;
+    if(o.userData.type==='gift'){
+     gifts++;scene.remove(o);
+    }else if(o.userData.type==='rock'&&jumpY>.65){
+     // Jump clears low rocks.
+    }else crash();
    }
   }
-  objects=objects.filter(o=>o.z>-.04);
-  particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.life--});
-  particles=particles.filter(p=>p.life>0);
-  updateHUD();
+  for(let i=objects.length-1;i>=0;i--){
+   if(objects[i].position.z>12){
+    scene.remove(objects[i]);objects.splice(i,1);
+   }
+  }
+  $('score').textContent=Math.floor(dist);
+  $('gifts').textContent=gifts;
  }
- draw();
- for(const p of particles){ctx.globalAlpha=p.life/25;ctx.fillStyle=p.c;ctx.fillRect(p.x,p.y,5,5)}ctx.globalAlpha=1;
- requestAnimationFrame(frame);
+ // Chase camera with a little responsive movement.
+ camera.position.x=THREE.MathUtils.lerp(camera.position.x,x*.45,.06);
+ camera.lookAt(x*.25,1.1,-12);
+ renderer.render(scene,camera);
 }
-function jump(){if(running&&player.jump===0){player.vj=enabled.moon?19:12}}
-addEventListener('keydown',e=>{
- if(['ArrowLeft','ArrowRight',' ','ArrowUp'].includes(e.key))e.preventDefault();
- keys[e.key]=true;keys[e.key.toLowerCase()]=true;
- if(e.key===' '||e.key==='ArrowUp')jump();
- if(e.key.toLowerCase()==='h'){menu?hideMenu():showMenu()}
- if(e.key.toLowerCase()==='r'&&(dead||!running))start();
+addEventListener('resize',()=>{
+ camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
 });
-addEventListener('keyup',e=>{keys[e.key]=false;keys[e.key.toLowerCase()]=false});
-function hold(id,key){
- const b=$(id);const down=e=>{e.preventDefault();keys[key]=true};
- const up=e=>{e.preventDefault();keys[key]=false};
- b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);
- b.addEventListener('pointercancel',up);b.addEventListener('pointerleave',up);
-}
-hold('left','ArrowLeft');hold('right','ArrowRight');
-$('jump').addEventListener('pointerdown',e=>{e.preventDefault();jump()});
-$('overlay').style.display='flex';makeHackUI();requestAnimationFrame(frame);
-})();
+buildHacks();requestAnimationFrame(animate);
 </script>
 </body>
 </html>
+
 
 

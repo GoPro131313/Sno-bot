@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Snow Rider Autopilot</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #091525;
+      color: #f0f7ff;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    main {
+      width: 100%;
+      max-width: 620px;
+      background: #13243a;
+      border: 1px solid #304761;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 70px #0005;
+    }
+    h1 { margin-top: 0; font-size: 30px; }
+    p { color: #b9c9dc; line-height: 1.6; }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #0b1929;
+      border-radius: 12px;
+      padding: 14px;
+      margin: 22px 0;
+    }
+    .dot {
+      width: 11px; height: 11px;
+      border-radius: 50%; background: #f0b34e;
+    }
+    button, a.button {
+      display: inline-block;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 17px;
+      font-size: 15px;
+      font-weight: 650;
+      cursor: pointer;
+      text-decoration: none;
+      margin: 5px 4px 5px 0;
+    }
+    .primary { background: #80d8ff; color: #092033; }
+    .secondary { background: #304761; color: white; }
+    .panel {
+      margin-top: 22px;
+      padding: 17px;
+      border-radius: 12px;
+      background: #0b1929;
+    }
+    label { display: block; margin-bottom: 8px; }
+    input[type=range] { width: 100%; }
+    code {
+      color: #9de5ff;
+      overflow-wrap: anywhere;
+    }
+    small { color: #9aafc6; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>🏂 Snow Rider Autopilot</h1>
+  <p>
+    Your experimental control center for Snow Rider 3D.
+    Configure the project here, then run the game-side
+    controller separately.
+  </p>
+
+  <div class="status">
+    <span class="dot" id="dot"></span>
+    <div>
+      <strong id="status">Controller not connected</strong><br>
+      <small id="detail">Open the game to get started.</small>
+    </div>
+  </div>
+
+  <a class="button primary"
+     href="https://www.hoodamath.com/games/snowrider3d.php.html#gsc.tab=0"
+     target="_blank" rel="noopener">
+    Open Snow Rider 3D ↗
+  </a>
+
+  <div class="panel">
+    <label for="speed">
+      Steering sensitivity: <strong id="speedLabel">50%</strong>
+    </label>
+    <input id="speed" type="range" min="10" max="100" value="50">
+    <p><small>
+      This setting is saved in this page's interface only.
+      It does not alter the game until connected to a compatible
+      game-side controller.
+    </small></p>
+  </div>
+
+  <div class="panel">
+    <h3>How to activate the bot</h3>
+    <ol>
+      <li>Open the game in a separate tab.</li>
+      <li>Install a browser userscript manager, such as Tampermonkey.</li>
+      <li>Install a controller script that runs on the Hooda Math page.</li>
+      <li>Test steering with the game visible before enabling automation.</li>
+    </ol>
+    <p>
+      <strong>Important:</strong> this dashboard does not yet detect
+      obstacles or steer the game. That requires a game-side script
+      with a reliable view of the game's state.
+    </p>
+  </div>
+
+  <button class="secondary" id="check">Check dashboard</button>
+</main>
+
+<script>
+  const speed = document.getElementById("speed");
+  const speedLabel = document.getElementById("speedLabel");
+
+  speed.addEventListener("input", () => {
+    speedLabel.textContent = speed.value + "%";
+  });
+
+  document.getElementById("check").addEventListener("click", () => {
+    document.getElementById("status").textContent =
+      "Dashboard running";
+    document.getElementById("detail").textContent =
+      "The page works; game automation is not connected.";
+    document.getElementById("dot").style.background = "#65d99a";
+  });
+</script>
+</body>
+</html>
